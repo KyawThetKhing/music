@@ -16,6 +16,9 @@ export default {
         country: 'required|excluded:Myanmar',
         tos: 'required',
       },
+      userData: {
+        country: 'USA',
+      },
     }
   },
   computed: {
@@ -117,7 +120,12 @@ export default {
           </form>
 
           <!-- Registration Form -->
-          <VeeForm v-show="tab === 'register'" :validation-schema="schema" @submit="handleRegister">
+          <VeeForm
+            v-show="tab === 'register'"
+            :validation-schema="schema"
+            @submit="handleRegister"
+            :initial-values="userData"
+          >
             <!-- Name -->
             <div class="mb-3">
               <label class="inline-block mb-2">Name</label>
@@ -165,7 +173,6 @@ export default {
               />
               <ErrorMessage name="password" class="text-red-600" />
             </div>
-            <!-- Confirm Password -->
             <!-- Confirm Password -->
             <div class="mb-3">
               <label class="inline-block mb-2">Confirm Password</label>
