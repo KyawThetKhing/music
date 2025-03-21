@@ -6,7 +6,16 @@ export default {
   name: 'AppAuth',
   data() {
     return {
-      tab: 'login',
+      tab: 'register',
+      schema: {
+        name: 'required|min:3|max:100|alphSpaces',
+        email: 'required|min:3|max:100|email',
+        age: 'required|minValue:18|maxValue:120|numeric',
+        password: 'required|min:3|max:100',
+        confirmPassword: 'confirmed:@password',
+        country: 'required|excluded:Myanmar',
+        tos: 'required',
+      },
     }
   },
   computed: {
@@ -14,6 +23,11 @@ export default {
     ...mapWritableState(useModalStore, {
       modalVisibility: 'isOpen',
     }),
+  },
+  methods: {
+    handleRegister(values) {
+      console.log(values)
+    },
   },
 }
 </script>
@@ -101,67 +115,95 @@ export default {
               Submit
             </button>
           </form>
+
           <!-- Registration Form -->
-          <form v-show="tab === 'register'">
+          <VeeForm v-show="tab === 'register'" :validation-schema="schema" @submit="handleRegister">
             <!-- Name -->
             <div class="mb-3">
               <label class="inline-block mb-2">Name</label>
-              <input
+              <VeeField
+                as="input"
+                name="name"
                 type="text"
                 class="block w-full py-1.5 px-3 text-gray-800 border border-gray-300 transition duration-500 focus:outline-none focus:border-black rounded"
                 placeholder="Enter Name"
               />
+              <ErrorMessage name="name" class="text-red-600" />
             </div>
             <!-- Email -->
             <div class="mb-3">
               <label class="inline-block mb-2">Email</label>
-              <input
+              <VeeField
+                as="input"
+                name="email"
                 type="email"
                 class="block w-full py-1.5 px-3 text-gray-800 border border-gray-300 transition duration-500 focus:outline-none focus:border-black rounded"
                 placeholder="Enter Email"
               />
+              <ErrorMessage name="email" class="text-red-600" />
             </div>
             <!-- Age -->
             <div class="mb-3">
               <label class="inline-block mb-2">Age</label>
-              <input
+              <VeeField
+                as="input"
+                name="age"
                 type="number"
                 class="block w-full py-1.5 px-3 text-gray-800 border border-gray-300 transition duration-500 focus:outline-none focus:border-black rounded"
               />
+              <ErrorMessage name="age" class="text-red-600" />
             </div>
             <!-- Password -->
             <div class="mb-3">
               <label class="inline-block mb-2">Password</label>
-              <input
+              <VeeField
+                as="input"
+                name="password"
                 type="password"
                 class="block w-full py-1.5 px-3 text-gray-800 border border-gray-300 transition duration-500 focus:outline-none focus:border-black rounded"
                 placeholder="Password"
               />
+              <ErrorMessage name="password" class="text-red-600" />
             </div>
+            <!-- Confirm Password -->
             <!-- Confirm Password -->
             <div class="mb-3">
               <label class="inline-block mb-2">Confirm Password</label>
-              <input
+              <VeeField
+                as="input"
+                name="confirmPassword"
                 type="password"
                 class="block w-full py-1.5 px-3 text-gray-800 border border-gray-300 transition duration-500 focus:outline-none focus:border-black rounded"
                 placeholder="Confirm Password"
               />
+              <ErrorMessage name="confirmPassword" class="text-red-600" />
             </div>
+            <!-- Country -->
             <!-- Country -->
             <div class="mb-3">
               <label class="inline-block mb-2">Country</label>
-              <select
+              <VeeField
+                name="country"
+                as="select"
                 class="block w-full py-1.5 px-3 text-gray-800 border border-gray-300 transition duration-500 focus:outline-none focus:border-black rounded"
               >
                 <option value="USA">USA</option>
                 <option value="Mexico">Mexico</option>
                 <option value="Germany">Germany</option>
-              </select>
+                <option value="Myanmar">Myanmar</option>
+              </VeeField>
+              <ErrorMessage name="country" class="text-red-600" />
             </div>
             <!-- TOS -->
             <div class="mb-3 pl-6">
-              <input type="checkbox" class="w-4 h-4 float-left -ml-6 mt-1 rounded" />
+              <VeeField
+                name="tos"
+                type="checkbox"
+                class="w-4 h-4 float-left -ml-6 mt-1 rounded"
+                value="1"
+              />
               <label class="inline-block">Accept terms of service</label>
+              <ErrorMessage name="tos" class="text-red-600 block" />
             </div>
             <button
               type="submit"
@@ -169,7 +211,7 @@ export default {
             >
               Submit
             </button>
-          </form>
+          </VeeForm>
         </div>
       </div>
     </div>

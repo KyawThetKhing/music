@@ -6,6 +6,7 @@
 2. [PurgeCSS](#purgecss)
 3. [VSCode Tailwind Warning Tips](#vscode-tailwind-warning-tips)
 4. [Placing Assets: `public` vs `src`](#placing-assets-public-vs-src)
+5. [VeeValidate Form Tips](#in-veevalidate-form)
 
 ---
 
@@ -52,3 +53,23 @@ To prevent linting errors related to Tailwind CSS directives like `@tailwind bas
 - **Use Case:** Assets used by components (images, styles) and bundled during the build.
 
 ---
+
+## 🧩 VeeValidate Form Tips
+
+### 📁 No Need for `@submit.prevent`
+
+VeeValidate automatically applies `@submit.prevent` to handle form submission, so you don't need to add it manually.
+
+### 📁 Checkbox Validation
+
+To make checkbox validation work properly with VeeValidate, you need to add `value="1"` to the `<VeeField>` element. Without it, the checkbox returns `true` or `false` instead of a value the `required` rule expects.
+
+Example:
+
+```html
+<div class="mb-3 pl-6">
+  <VeeField name="tos" type="checkbox" class="w-4 h-4 float-left -ml-6 mt-1 rounded" value="1" />
+  <label class="inline-block">Accept terms of service</label>
+  <ErrorMessage name="tos" class="text-red-600 block" />
+</div>
+```
