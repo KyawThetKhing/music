@@ -19,6 +19,10 @@ export default {
       userData: {
         country: 'USA',
       },
+      regInSubmission: false,
+      regShowAlert: false,
+      regAlertVariant: 'bg-blue-500',
+      regAlertMsg: 'Please wait as we process your registration',
     }
   },
   computed: {
@@ -29,11 +33,20 @@ export default {
   },
   methods: {
     handleRegister(values) {
-      console.log(values)
+      this.regInSubmission = true
+      this.regShowAlert = true
+      this.regAlertVariant = 'bg-blue-500'
+      this.regAlertMsg = 'Please wait as we process your registration'
+
+      setTimeout(() => {
+        this.regAlertVariant = 'bg-green-500'
+        this.regAlertMsg = 'Success! Your registration is complete'
+      }, 3000)
     },
   },
 }
 </script>
+
 <template>
   <!-- Auth Modal -->
   <div :class="hiddenClass" class="fixed z-10 inset-0 overflow-y-auto" id="modal">
@@ -120,6 +133,13 @@ export default {
           </form>
 
           <!-- Registration Form -->
+          <div
+            class="text-white text-center font-bold p-4 rounded mb-4"
+            :class="regAlertVariant"
+            v-if="regShowAlert"
+          >
+            {{ regAlertMsg }}
+          </div>
           <VeeForm
             v-show="tab === 'register'"
             :validation-schema="schema"
@@ -215,6 +235,7 @@ export default {
             <button
               type="submit"
               class="block w-full bg-purple-600 text-white py-1.5 px-3 rounded transition hover:bg-purple-700"
+              :disabled="regInSubmission"
             >
               Submit
             </button>
