@@ -36,6 +36,8 @@ export default {
 
       this.loginAlertVariant = 'bg-green-500'
       this.loginAlertMsg = 'Success! Your login is complete'
+
+      window.location.reload()
     },
   },
 }

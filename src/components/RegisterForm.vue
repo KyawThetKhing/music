@@ -47,6 +47,8 @@ export default {
       }
       this.regAlertVariant = 'bg-green-500'
       this.regAlertMsg = 'Success! Your registration is complete'
+
+      window.location.reload()
     },
   },
 }
