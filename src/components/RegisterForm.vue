@@ -1,4 +1,7 @@
 <script>
+import { mapActions } from 'pinia'
+
+import useUserStore from '@/stores/user'
 import { auth, usersCollection } from '@/includes/firebase'
 
 export default {
@@ -26,28 +29,22 @@ export default {
     }
   },
   methods: {
+    ...mapActions(useUserStore, {
+      createUser: 'register',
+    }),
     async handleRegister(values) {
       this.regInSubmission = true
       this.regShowAlert = true
       this.regAlertVariant = 'bg-blue-500'
       this.regAlertMsg = 'Please wait as we process your registration'
-      let userCredential = null
       try {
-        userCredential = await auth.createUserWithEmailAndPassword(values.email, values.password)
-        await usersCollection.add({
-          name: values.name,
-          email: values.email,
-          age: values.age,
-          country: values.country,
-          userType: values.userType,
-        })
+        await this.createUser(values)
       } catch (error) {
         this.regInSubmission = false
         this.regAlertVariant = 'bg-red-500'
         this.regAlertMsg = 'An error occurred. Please try again.'
         return
       }
-
       this.regAlertVariant = 'bg-green-500'
       this.regAlertMsg = 'Success! Your registration is complete'
     },
