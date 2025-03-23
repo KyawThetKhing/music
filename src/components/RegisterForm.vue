@@ -1,4 +1,6 @@
 <script>
+import { auth, usersCollection } from '@/includes/firebase'
+
 export default {
   name: 'RegisterForm',
   data() {
@@ -10,10 +12,12 @@ export default {
         password: 'required|min:3|max:100',
         confirmPassword: 'passwords_mismatch:@password',
         country: 'required|country_excluded:Myanmar',
+        userType: 'required',
         tos: 'tos',
       },
       userData: {
         country: 'USA',
+        userType: 'listener',
       },
       regInSubmission: false,
       regShowAlert: false,
@@ -22,16 +26,30 @@ export default {
     }
   },
   methods: {
-    handleRegister(values) {
+    async handleRegister(values) {
       this.regInSubmission = true
       this.regShowAlert = true
       this.regAlertVariant = 'bg-blue-500'
       this.regAlertMsg = 'Please wait as we process your registration'
+      let userCredential = null
+      try {
+        userCredential = await auth.createUserWithEmailAndPassword(values.email, values.password)
+        await usersCollection.add({
+          name: values.name,
+          email: values.email,
+          age: values.age,
+          country: values.country,
+          userType: values.userType,
+        })
+      } catch (error) {
+        this.regInSubmission = false
+        this.regAlertVariant = 'bg-red-500'
+        this.regAlertMsg = 'An error occurred. Please try again.'
+        return
+      }
 
-      setTimeout(() => {
-        this.regAlertVariant = 'bg-green-500'
-        this.regAlertMsg = 'Success! Your registration is complete'
-      }, 3000)
+      this.regAlertVariant = 'bg-green-500'
+      this.regAlertMsg = 'Success! Your registration is complete'
     },
   },
 }
@@ -107,7 +125,6 @@ export default {
       <ErrorMessage name="confirmPassword" class="text-red-600" />
     </div>
     <!-- Country -->
-    <!-- Country -->
     <div class="mb-3">
       <label class="inline-block mb-2">Country</label>
       <VeeField
@@ -121,6 +138,19 @@ export default {
         <option value="Myanmar">Myanmar</option>
       </VeeField>
       <ErrorMessage name="country" class="text-red-600" />
+    </div>
+    <!-- User Type -->
+    <div class="mb-3">
+      <label class="inline-block mb-2">Register as</label>
+      <VeeField
+        name="userType"
+        as="select"
+        class="block w-full py-1.5 px-3 text-gray-800 border border-gray-300 transition duration-500 focus:outline-none focus:border-black rounded"
+      >
+        <option value="artist">Artist</option>
+        <option value="listener">Listener</option>
+      </VeeField>
+      <ErrorMessage name="userType" class="text-red-600" />
     </div>
     <!-- TOS -->
     <div class="mb-3 pl-6">

@@ -1,5 +1,7 @@
 import firebase from 'firebase/app'
 import 'firebase/auth'
+import 'firebase/firestore'
+
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_API_KEY,
   authDomain: import.meta.env.VITE_AUTH_DOMAIN,
@@ -10,4 +12,8 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig)
 
-export default firebase
+const auth = firebase.auth()
+const db = firebase.firestore()
+
+const usersCollection = db.collection('users')
+export { auth, db, usersCollection }
