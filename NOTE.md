@@ -73,3 +73,35 @@ Example:
   <ErrorMessage name="tos" class="text-red-600 block" />
 </div>
 ```
+
+---
+
+## 🧩 Router [Best Practice]
+
+### 📁 `src/router/index.js`
+
+When using `<RouterLink>`, be mindful of how the `to` attribute behaves based on the presence of a leading `/`:
+
+- **Relative Path (no leading `/`)**  
+  The path is appended to the current route.  
+  Example:  
+  If the current URL is `http://localhost:5173/test/test` and you use `to="contact"`,  
+  it navigates to:  
+  `http://localhost:5173/test/contact`
+
+- **Absolute Path (with leading `/`)**  
+  The path replaces the current route from the root.  
+  Example:  
+  If the current URL is `http://localhost:5173/test/test` and you use `to="/contact"`,  
+  it navigates to:  
+  `http://localhost:5173/contact`
+
+### ✅ Example
+
+```html
+<!-- Relative path (appends to current route) -->
+<RouterLink to="contact" class="text-white font-bold uppercase text-2xl mr-4"> Music </RouterLink>
+
+<!-- Absolute path (navigates from root) -->
+<RouterLink to="/contact" class="text-white font-bold uppercase text-2xl mr-4"> Music </RouterLink>
+```

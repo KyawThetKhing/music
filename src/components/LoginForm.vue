@@ -19,7 +19,6 @@ export default {
   methods: {
     ...mapActions(useUserStore, ['authenticate']),
     async handleLogin(values) {
-      console.log('login value', values)
       this.loginInSubmission = true
       this.loginShowAlert = true
       this.loginAlertVariant = 'bg-blue-500'
