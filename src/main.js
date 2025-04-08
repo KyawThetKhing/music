@@ -2,7 +2,7 @@ import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 
 import VeeValidatePlugin from '@/includes/validation'
-import { auth, usersCollection } from '@/includes/firebase'
+import { auth } from '@/includes/firebase'
 
 import App from './App.vue'
 import router from './router'
