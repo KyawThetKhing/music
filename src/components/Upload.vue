@@ -52,7 +52,6 @@ export default {
           uploadItem.icon = 'fa fa-times'
           uploadItem.text_class = 'text-red-400'
           uploadItem.current_progress = 100
-          console.error('Upload failed', error)
           continue
         }
         const { data: publicUrl, error: publicUrlError } = await storageRef.getPublicUrl(filePath)
@@ -61,7 +60,6 @@ export default {
           uploadItem.icon = 'fa fa-times'
           uploadItem.text_class = 'text-red-400'
           uploadItem.current_progress = 100
-          console.error('Failed to get public URL', publicUrlError)
           continue
         }
         const song = {
@@ -82,6 +80,8 @@ export default {
         uploadItem.icon = 'fa fa-check'
         uploadItem.text_class = 'text-green-400'
       }
+
+      this.$emit('uploaded')
     },
   },
 }
