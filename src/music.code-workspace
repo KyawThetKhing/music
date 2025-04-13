@@ -6,6 +6,9 @@
     {
       "path": "../../code/music-template",
     },
+    {
+      "path": "../../../udemy-vue/finance-tracker",
+    },
   ],
   "settings": {},
 }
