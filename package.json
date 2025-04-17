@@ -19,6 +19,7 @@
     "@vee-validate/rules": "^4.15.0",
     "dayjs": "^1.11.13",
     "firebase": "^8.10.1",
+    "howler": "^2.2.4",
     "install": "^0.13.0",
     "npm": "^11.3.0",
     "pinia": "^3.0.1",

@@ -1,10 +1,12 @@
 <script>
 import { ErrorMessage } from 'vee-validate'
-import { mapState } from 'pinia'
+import { mapState, mapActions } from 'pinia'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 
 import useUserStore from '@/stores/user'
+import usePlayerStore from '@/stores/player'
+
 import { songsCollection, auth, commentsCollection } from '@/includes/firebase'
 dayjs.extend(relativeTime)
 
@@ -58,6 +60,7 @@ export default {
     },
   },
   methods: {
+    ...mapActions(usePlayerStore, ['newSong']),
     async addComment(values, { resetForm }) {
       this.commentInSubmission = true
       this.commentShowAlert = true
@@ -109,6 +112,7 @@ export default {
       <!-- Play/Pause Button -->
       <button
         type="button"
+        @click.prevent="newSong(song)"
         class="z-50 h-24 w-24 text-3xl bg-white text-black rounded-full focus:outline-none"
       >
         <i class="fas fa-play"></i>
@@ -182,35 +186,4 @@ export default {
       </p>
     </li>
   </ul>
-
-  <!-- Player -->
-  <div class="fixed bottom-0 left-0 bg-white px-4 py-2 w-full">
-    <!-- Track Info -->
-    <div class="text-center">
-      <span class="song-title font-bold">Song Title</span> by
-      <span class="song-artist">Artist</span>
-    </div>
-    <div class="flex flex-nowrap gap-4 items-center">
-      <!-- Play/Pause Button -->
-      <button type="button">
-        <i class="fa fa-play text-gray-500 text-xl"></i>
-      </button>
-      <!-- Current Position -->
-      <div class="player-currenttime">00:00</div>
-      <!-- Scrub Container  -->
-      <div class="w-full h-2 rounded bg-gray-200 relative cursor-pointer">
-        <!-- Player Ball -->
-        <span class="absolute -top-2.5 -ml-2.5 text-gray-800 text-lg" style="left: 50%">
-          <i class="fas fa-circle"></i>
-        </span>
-        <!-- Player Progress Bar-->
-        <span
-          class="block h-2 rounded bg-gradient-to-r from-green-500 to-green-400"
-          style="width: 50%"
-        ></span>
-      </div>
-      <!-- Duration -->
-      <div class="player-duration">03:06</div>
-    </div>
-  </div>
 </template>

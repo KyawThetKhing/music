@@ -19,7 +19,7 @@ export default {
         if (file.type !== 'audio/mpeg') continue
 
         const storageRef = supabase.storage.from('music')
-        const filePath = `music/${file.name}`
+        const filePath = `${file.name}`
 
         const upload = {
           task: null,
@@ -42,7 +42,10 @@ export default {
           }
         }, 200)
 
-        const { data, error } = await storageRef.upload(filePath, file)
+        const { data, error } = await storageRef.upload(filePath, file, {
+          contentType: 'audio/mpeg',
+          upsert: true,
+        })
         clearInterval(fakeProgress)
 
         const uploadItem = this.uploads[uploadIndex]
@@ -54,7 +57,10 @@ export default {
           uploadItem.current_progress = 100
           continue
         }
-        const { data: publicUrl, error: publicUrlError } = await storageRef.getPublicUrl(filePath)
+        const {
+          data: { publicUrl },
+          error: publicUrlError,
+        } = await storageRef.getPublicUrl(filePath)
         if (publicUrlError) {
           uploadItem.variant = 'bg-red-400'
           uploadItem.icon = 'fa fa-times'
@@ -62,6 +68,7 @@ export default {
           uploadItem.current_progress = 100
           continue
         }
+        console.log('🚀 ~ Upload.vue:68 ~ upload ~ publicUrl:', publicUrl)
         const song = {
           uid: auth.currentUser.uid,
           display_name: auth.currentUser.displayName,
