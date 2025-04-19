@@ -40,6 +40,7 @@ export default {
   },
   computed: {
     ...mapState(useUserStore, ['userLoggedIn']),
+    ...mapState(usePlayerStore, ['playing']),
     sortedComments() {
       return this.comments.slice().sort((a, b) => {
         if (this.sort === '1') {
@@ -115,7 +116,7 @@ export default {
         @click.prevent="newSong(song)"
         class="z-50 h-24 w-24 text-3xl bg-white text-black rounded-full focus:outline-none"
       >
-        <i class="fas fa-play"></i>
+        <i class="fa" :class="{ 'fa-pause': playing, 'fa-play': !playing }"></i>
       </button>
       <div class="z-50 text-left ml-8">
         <!-- Song Info -->
@@ -169,7 +170,7 @@ export default {
     </div>
   </section>
   <!-- Comments -->
-  <ul class="container mx-auto">
+  <ul class="container mx-auto" id="comments">
     <li
       class="p-6 bg-gray-50 border border-gray-200"
       v-for="comment in sortedComments"

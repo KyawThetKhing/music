@@ -6,7 +6,7 @@ import helper from '@/includes/helper'
 export default defineStore('player', {
   state: () => ({
     currentSong: {},
-    sound: {},
+    sound: null,
     seek: '00:00',
     duration: '00:00',
     progress: null,
@@ -14,6 +14,11 @@ export default defineStore('player', {
   }),
   actions: {
     async newSong(song) {
+      if (this.sound && this.sound.playing()) {
+        this.sound.pause()
+        return
+      }
+
       if (this.sound instanceof Howl) {
         this.sound.unload()
       }

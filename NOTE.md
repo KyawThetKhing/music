@@ -105,3 +105,35 @@ When using `<RouterLink>`, be mindful of how the `to` attribute behaves based on
 <!-- Absolute path (navigates from root) -->
 <RouterLink to="/contact" class="text-white font-bold uppercase text-2xl mr-4"> Music </RouterLink>
 ```
+
+### 🔖 Navigating to a Specific Section of a Page with Vue Router
+
+```vue
+<RouterLink
+  custom
+  :to="{ name: 'song', params: { id: song.docID }, hash: '#comments' }"
+  v-slot="{ navigate }"
+>
+  <span class="comments" @click="navigate">
+    <i class="fa fa-comments text-gray-600"></i>
+    {{ song?.comment_count }}
+  </span>
+</RouterLink>
+```
+
+### 🔖 Navigating to a Specific Section of a Page with Vue Router
+
+```vue
+<RouterLink
+  custom
+  :to="{ name: 'song', params: { id: song.docID }, hash: '#comments' }"
+  v-slot="{ navigate }"
+>
+  <span class="comments" @click="navigate">
+    <i class="fa fa-comments text-gray-600"></i>
+    {{ song?.comment_count }}
+  </span>
+</RouterLink>
+```
+
+Add id to the comments section
