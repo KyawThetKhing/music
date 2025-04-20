@@ -24,7 +24,30 @@ export default {
 </script>
 <template>
   <AppHeader />
-  <router-view></router-view>
+  <!-- <router-view></router-view> -->
+  <router-view v-slot="{ Component }">
+    <transition name="fade" mode="out-in">
+      <component :is="Component" />
+    </transition>
+  </router-view>
   <AppPlayer />
   <AppAuth />
 </template>
+
+<style>
+.fade-enter-from {
+  opacity: 0;
+  background-color: red;
+}
+
+.fade-enter-active {
+  transition: all 0.5s linear;
+  background-color: green;
+}
+
+.fade-leave-to {
+  transition: all 0.5s linear;
+  opacity: 0;
+  background-color: blue;
+}
+</style>
