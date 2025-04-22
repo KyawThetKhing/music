@@ -8,6 +8,9 @@ export default {
   computed: {
     ...mapWritableState(useModalStore, ['isOpen']),
     ...mapState(useUserStore, ['userLoggedIn']),
+    currentLocale() {
+      return this.$i18n.locale === 'fr' ? 'French' : 'English'
+    },
   },
   methods: {
     ...mapActions(useUserStore, ['signOut']),
@@ -17,6 +20,9 @@ export default {
     logOut() {
       this.signOut()
       this.$router.replace({ name: 'home' })
+    },
+    changeLocale() {
+      this.$i18n.locale = this.$i18n.locale === 'en' ? 'fr' : 'en'
     },
   },
 }
@@ -51,6 +57,13 @@ export default {
               <a class="px-2 text-white" @click.prevent="logOut">Logout</a>
             </li>
           </template>
+        </ul>
+        <ul class="ml-auto">
+          <li>
+            <a class="px-2 text-white" href="#" @click.prevent="changeLocale">
+              {{ currentLocale }}
+            </a>
+          </li>
         </ul>
       </div>
     </nav>

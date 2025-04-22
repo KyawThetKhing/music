@@ -66,7 +66,7 @@ export default {
   <VeeForm :validation-schema="registerSchema" @submit="handleRegister" :initial-values="userData">
     <!-- Name -->
     <div class="mb-3">
-      <label class="inline-block mb-2">Name</label>
+      <label class="inline-block mb-2">{{ $t('register.name') }}</label>
       <VeeField
         as="input"
         name="name"
@@ -78,7 +78,7 @@ export default {
     </div>
     <!-- Email -->
     <div class="mb-3">
-      <label class="inline-block mb-2">Email</label>
+      <label class="inline-block mb-2">{{ $t('register.email') }}</label>
       <VeeField
         as="input"
         name="email"
@@ -90,7 +90,7 @@ export default {
     </div>
     <!-- Age -->
     <div class="mb-3">
-      <label class="inline-block mb-2">Age</label>
+      <label class="inline-block mb-2">{{ $t('register.age') }}</label>
       <VeeField
         as="input"
         name="age"
@@ -101,7 +101,7 @@ export default {
     </div>
     <!-- Password -->
     <div class="mb-3">
-      <label class="inline-block mb-2">Password</label>
+      <label class="inline-block mb-2">{{ $t('register.password') }}</label>
       <VeeField
         as="input"
         name="password"
@@ -113,7 +113,7 @@ export default {
     </div>
     <!-- Confirm Password -->
     <div class="mb-3">
-      <label class="inline-block mb-2">Confirm Password</label>
+      <label class="inline-block mb-2">{{ $t('register.confirm_password') }}</label>
       <VeeField
         as="input"
         name="confirmPassword"
@@ -125,29 +125,29 @@ export default {
     </div>
     <!-- Country -->
     <div class="mb-3">
-      <label class="inline-block mb-2">Country</label>
+      <label class="inline-block mb-2">{{ $t('register.country') }}</label>
       <VeeField
         name="country"
         as="select"
         class="block w-full py-1.5 px-3 text-gray-800 border border-gray-300 transition duration-500 focus:outline-none focus:border-black rounded"
       >
-        <option value="USA">USA</option>
-        <option value="Mexico">Mexico</option>
-        <option value="Germany">Germany</option>
-        <option value="Myanmar">Myanmar</option>
+        <option value="USA">{{ $t('register.usa') }}</option>
+        <option value="Mexico">{{ $t('register.mexico') }}</option>
+        <option value="Germany">{{ $t('register.germany') }}</option>
+        <option value="Myanmar">{{ $t('register.myanmar') }}</option>
       </VeeField>
       <ErrorMessage name="country" class="text-red-600" />
     </div>
     <!-- User Type -->
     <div class="mb-3">
-      <label class="inline-block mb-2">Register as</label>
+      <label class="inline-block mb-2">{{ $t('register.register_as') }}</label>
       <VeeField
         name="userType"
         as="select"
         class="block w-full py-1.5 px-3 text-gray-800 border border-gray-300 transition duration-500 focus:outline-none focus:border-black rounded"
       >
-        <option value="artist">Artist</option>
-        <option value="listener">Listener</option>
+        <option value="artist">{{ $t('register.artist') }}</option>
+        <option value="listener">{{ $t('register.listener') }}</option>
       </VeeField>
       <ErrorMessage name="userType" class="text-red-600" />
     </div>
@@ -159,7 +159,9 @@ export default {
         class="w-4 h-4 float-left -ml-6 mt-1 rounded"
         value="1"
       />
-      <label class="inline-block">Accept terms of service</label>
+      <i18n-t class="inline-block" keypath="register.accept" tag="label">
+        <a href="#">{{ $t('register.tos') }}</a>
+      </i18n-t>
       <ErrorMessage name="tos" class="text-red-600 block" />
     </div>
     <button
@@ -167,7 +169,7 @@ export default {
       class="block w-full bg-purple-600 text-white py-1.5 px-3 rounded transition hover:bg-purple-700"
       :disabled="regInSubmission"
     >
-      Submit
+      {{ $t('register.submit') }}
     </button>
   </VeeForm>
 </template>

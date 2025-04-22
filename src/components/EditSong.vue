@@ -84,7 +84,7 @@ export default {
       </div>
       <VeeForm @submit="editedSong" :initial-values="form" :validation-schema="editSongSchema">
         <div class="mb-3">
-          <label class="inline-block mb-2">Song Title</label>
+          <label class="inline-block mb-2">{{ $t('manage.song_title') }}</label>
           <VeeField
             type="text"
             class="block w-full py-1.5 px-3 text-gray-800 border border-gray-300 transition duration-500 focus:outline-none focus:border-black rounded"
@@ -96,7 +96,7 @@ export default {
           <ErrorMessage name="title" class="text-red-600" />
         </div>
         <div class="mb-3">
-          <label class="inline-block mb-2">Genre</label>
+          <label class="inline-block mb-2">{{ $t('manage.genre') }}</label>
           <VeeField
             type="text"
             class="block w-full py-1.5 px-3 text-gray-800 border border-gray-300 transition duration-500 focus:outline-none focus:border-black rounded"
@@ -112,7 +112,7 @@ export default {
           class="py-1.5 px-3 rounded text-white bg-green-600 mr-3"
           :disabled="inSubmission"
         >
-          Submit
+          {{ $t('manage.submit') }}
         </button>
         <button
           type="button"
@@ -120,7 +120,7 @@ export default {
           @click="cancelEdit"
           :disabled="inSubmission"
         >
-          Go Back
+          {{ $t('manage.go_back') }}
         </button>
       </VeeForm>
     </div>

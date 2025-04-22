@@ -1,5 +1,43 @@
 {
   "home": {
-    "listen": "écoute de la musique !"
+    "listen": "écoute de la musique !",
+    "description": "Plongez dans un monde sonore avec notre application musicale : la destination idéale pour découvrir, écouter et vibrer au rythme des meilleurs morceaux du monde entier. Que vous soyez amateur de rythmes relaxants, de tubes ou de perles underground, nous avons ce qu'il vous faut. Lancez lecture et laissez-vous emporter par la musique.",
+    "songs": "Chansons"
+  },
+  "song": {
+    "comment_count": "Aucun commentaire | 1 commentaire | {count} commentaires",
+    "submit": "Soumettre",
+    "latest": "Plus récent",
+    "oldest": "Plus ancien"
+  },
+  "manage": {
+    "my_songs": "Mes chansons",
+    "song_title": "Titre de la chanson",
+    "genre": "Genre",
+    "submit": "Soumettre",
+    "go_back": "Retour",
+    "upload": "Télécharger",
+    "drop_files": "Déposez vos fichiers ici"
+  },
+  "register": {
+    "accept": "J'accepte les conditions générales de la musique {0}",
+    "tos": "Conditions d'utilisation",
+    "your_account": "Votre compte",
+    "login": "Se connecter",
+    "register": "Registre",
+    "name": "Nom",
+    "age": "Âge",
+    "email": "E-mail",
+    "password": "Mot de passe",
+    "confirm_password": "Confirmez le mot de passe",
+    "country": "Pays",
+    "usa": "USA",
+    "mexico": "Mexique",
+    "germany": "Allemagne",
+    "myanmar": "Birmanie",
+    "register_as": "Inscrivez-vous en tant que",
+    "artist": "Artiste",
+    "listener": "Auditrice",
+    "submit": "Soumettre"
   }
 }

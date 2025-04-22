@@ -123,6 +123,7 @@ export default {
           <!-- Song Info -->
           <div class="text-3xl font-bold">{{ song.modified_name }}</div>
           <div>{{ song.genre }}</div>
+          <div class="song-price">{{ $n(1, 'currency', 'ja') }}</div>
         </div>
       </div>
     </section>
@@ -158,7 +159,7 @@ export default {
               class="py-1.5 px-3 rounded text-white bg-green-600 block"
               :disabled="commentInSubmission"
             >
-              Submit
+              {{ $t('song.submit') }}
             </button>
           </VeeForm>
           <!-- Sort Comments -->
@@ -166,8 +167,8 @@ export default {
             class="block mt-4 py-1.5 px-3 text-gray-800 border border-gray-300 transition duration-500 focus:outline-none focus:border-black rounded"
             v-model="sort"
           >
-            <option value="1">Latest</option>
-            <option value="2">Oldest</option>
+            <option value="1">{{ $t('song.latest') }}</option>
+            <option value="2">{{ $t('song.oldest') }}</option>
           </select>
         </div>
       </div>

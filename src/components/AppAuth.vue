@@ -45,7 +45,7 @@ export default {
         <div class="py-4 text-left px-6">
           <!--Title-->
           <div class="flex justify-between items-center pb-4">
-            <p class="text-2xl font-bold">Your Account</p>
+            <p class="text-2xl font-bold">{{ $t('register.your_account') }}</p>
             <!-- Modal Close Button -->
             <div class="modal-close cursor-pointer z-50" @click="modalVisibility = false">
               <i class="fas fa-times"></i>
@@ -64,7 +64,7 @@ export default {
                 href="#"
                 @click="tab = 'LoginForm'"
               >
-                Login
+                {{ $t('register.login') }}
               </a>
             </li>
             <li class="flex-auto text-center">
@@ -77,7 +77,7 @@ export default {
                 href="#"
                 @click="tab = 'RegisterForm'"
               >
-                Register
+                {{ $t('register.register') }}
               </a>
             </li>
           </ul>
