@@ -1,5 +1,6 @@
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
+import { registerSW } from 'virtual:pwa-register'
 
 import VeeValidatePlugin from '@/includes/validation'
 import { auth } from '@/includes/firebase'
@@ -11,6 +12,7 @@ import router from './router'
 import './assets/base.css'
 import './assets/main.css'
 
+registerSW({ immediate: true })
 let app
 
 //NOTE: This is a common pattern in Vue applications to ensure that the app is only created once and check the authentication state using firebase
