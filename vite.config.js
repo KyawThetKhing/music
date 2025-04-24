@@ -4,6 +4,7 @@ import { defineConfig } from 'vite'
 import { VitePWA } from 'vite-plugin-pwa'
 import vue from '@vitejs/plugin-vue'
 import vueDevTools from 'vite-plugin-vue-devtools'
+// import { visualizer } from 'rollup-plugin-visualizer'
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -30,6 +31,9 @@ export default defineConfig({
       },
     }),
     vueDevTools(),
+    // visualizer({
+    //   open: true,
+    // }),
   ],
   resolve: {
     alias: {

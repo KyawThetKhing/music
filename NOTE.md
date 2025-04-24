@@ -137,3 +137,32 @@ When using `<RouterLink>`, be mindful of how the `to` attribute behaves based on
 ```
 
 Add id to the comments section
+
+### Registering components globally [Best Practice]
+
+1. Create a \_globals.js file under includes folder
+2. import \_globals.js in main.js
+3. Copy the following code to \_globals.js
+
+```js
+import _ from 'lodash'
+export default {
+  install(app) {
+    const baseComponents = import.meta.glob('@/components/base/*.vue', { eager: true })
+    Object.entries(baseComponents).forEach(([path, module]) => {
+      const componentName = _.upperFirst(
+        _.camelCase(
+          path
+            .split('/')
+            .pop()
+            .replace(/\.\w+$/, ''),
+        ),
+      )
+
+      app.component(`Base${componentName}`, module.default)
+    })
+  },
+}
+```
+
+4. Use the components in any component by prefixing them with `Base`

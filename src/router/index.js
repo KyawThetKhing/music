@@ -1,11 +1,11 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '@/views/HomeView.vue'
-import AboutView from '@/views/AboutView.vue'
-import ManageView from '@/views/ManageView.vue'
-import SongView from '@/views/SongView.vue'
 
 import useUserStore from '@/stores/user'
 
+const HomeView = () => import('@/views/HomeView.vue')
+const AboutView = () => import('@/views/AboutView.vue')
+const ManageView = () => import('@/views/ManageView.vue')
+const SongView = () => import('@/views/SongView.vue')
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
