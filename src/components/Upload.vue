@@ -11,6 +11,13 @@ export default {
     }
   },
   methods: {
+    sanitizeKey(filename) {
+      return filename
+        .toLowerCase()
+        .replace(/\s+/g, '-')
+        .replace(/[\[\]{}()"'`]/g, '')
+        .replace(/[^a-z0-9\-\.]/g, '')
+    },
     async upload($event) {
       this.isDragOver = false
       const files = $event.dataTransfer ? [...$event.dataTransfer.files] : [...$event.target.files]
@@ -30,7 +37,7 @@ export default {
           return
         }
         const storageRef = supabase.storage.from('music')
-        const filePath = `${file.name}`
+        const filePath = `${this.sanitizeKey(file.name)}`
 
         const upload = {
           task: null,
