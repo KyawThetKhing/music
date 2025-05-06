@@ -8,6 +8,9 @@ import vueDevTools from 'vite-plugin-vue-devtools'
 
 // https://vite.dev/config/
 export default defineConfig({
+  test: {
+    globals: true,
+  },
   plugins: [
     vue(),
     VitePWA({

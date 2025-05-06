@@ -27,15 +27,30 @@ export default {
   },
   created() {
     this.getSongs()
+    window.addEventListener('scroll', this.handleScroll)
+  },
+  beforeUnmount() {
+    window.removeEventListener('scroll', this.handleScroll)
   },
   methods: {
+    handleScroll() {
+      const { scrollTop, offsetHeight } = document.documentElement
+      const { innerHeight } = window
+      const bottomOfWindow = Math.round(scrollTop) + innerHeight === offsetHeight
+
+      if (bottomOfWindow) {
+        this.getSongs()
+      }
+    },
     async getSongs() {
-      const snapshot = await songsCollection.where('uid', '==', auth.currentUser.uid).get()
-      const data = snapshot.docs.map((doc) => ({
-        docID: doc.id,
-        ...doc.data(),
-      }))
-      this.songs = data
+      const snapshots = await songsCollection.where('uid', '==', auth.currentUser.uid).get()
+
+      snapshots.forEach((doc) => {
+        this.songs.push({
+          docID: doc.id,
+          ...doc.data(),
+        })
+      })
     },
     editSong(id) {
       this.isShowForm = true

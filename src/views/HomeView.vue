@@ -95,9 +95,10 @@ export default {
           <div v-icon.right.yellow="'fa fa-headphones-alt'"></div>
         </div>
         <!-- Playlist -->
-        <ol id="playlist">
+        <ol id="playlist" v-if="songs.length">
           <AppSongItem v-for="song in songs" :key="song.docID" :song="song" />
         </ol>
+        <p v-else class="text-center py-8">No songs available</p>
         <!-- .. end Playlist -->
       </div>
     </section>

@@ -28,7 +28,7 @@ export default {
 }
 </script>
 <template>
-  <header id="header" class="bg-gray-700">
+  <header id="header" class="bg-gray-700 sticky top-0 left-0 right-0 z-10">
     <nav class="container mx-auto flex justify-start items-center py-5 px-4">
       <!-- App Name -->
       <RouterLink
@@ -43,9 +43,9 @@ export default {
         <!-- Primary Navigation -->
         <ul class="flex flex-row mt-1">
           <!-- Navigation Links -->
-          <li>
+          <!-- <li>
             <RouterLink :to="{ name: 'about' }" class="px-2 text-white"> About </RouterLink>
-          </li>
+          </li> -->
           <li v-if="!userLoggedIn">
             <a class="px-2 text-white" @click="toggleAuthModal">Login / Register</a>
           </li>

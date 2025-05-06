@@ -1,0 +1,6 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AboutView.vue > renders inner context 1`] = `
+"<div>About View</div>
+<base-button></base-button>"
+`;

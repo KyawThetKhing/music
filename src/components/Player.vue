@@ -14,7 +14,7 @@ export default {
 </script>
 <template>
   <!-- Player -->
-  <div class="fixed bottom-0 left-0 bg-white px-4 py-2 w-full">
+  <div class="fixed bottom-0 left-0 bg-white px-4 py-2 w-full" v-if="currentSong.modified_name">
     <!-- Track Info -->
     <div class="text-center" v-if="currentSong.modified_name">
       <span class="song-title font-bold">{{ currentSong.modified_name }}</span> by
