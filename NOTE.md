@@ -166,3 +166,43 @@ export default {
 ```
 
 4. Use the components in any component by prefixing them with `Base`
+
+# Vue Dynamic Components: Options API vs Composition API
+
+## 🎯 Problem
+
+When using `<component :is="tab" />` with a string value like `'LoginForm'`, it works in the **Options API**, but **doesn't work** in the **Composition API (`<script setup>`)**.
+
+---
+
+## ✅ Why It Works in the Options API
+
+In the Options API, components are explicitly registered using the `components` option:
+
+```js
+components: {
+  LoginForm, RegisterForm
+}
+```
+
+## ✅ Solution
+
+````js
+<script setup>
+import { ref } from 'vue'
+import LoginForm from './LoginForm.vue'
+import RegisterForm from './RegisterForm.vue'
+
+// Component map
+const tabs = {
+  LoginForm,
+  RegisterForm,
+}
+
+const currentTab = ref('LoginForm')
+</script>
+
+<template>
+  <component :is="tabs[currentTab]" />
+</template> ```
+````

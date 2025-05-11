@@ -1,4 +1,4 @@
-<script>
+<!-- <script>
 import { mapState, mapWritableState } from 'pinia'
 import useModalStore from '@/stores/modal'
 import LoginForm from '@/components/LoginForm.vue'
@@ -23,11 +23,24 @@ export default {
   },
   methods: {},
 }
+</script> -->
+<script setup>
+import { ref } from 'vue'
+import useModalStore from '@/stores/modal'
+import LoginForm from '@/components/LoginForm.vue'
+import RegisterForm from '@/components/RegisterForm.vue'
+
+const tabs = {
+  LoginForm,
+  RegisterForm,
+}
+const currentTab = ref('LoginForm')
+const modalStore = useModalStore()
 </script>
 
 <template>
   <!-- Auth Modal -->
-  <div :class="hiddenClass" class="fixed z-10 inset-0 overflow-y-auto" id="modal">
+  <div :class="modalStore.hiddenClass" class="fixed z-10 inset-0 overflow-y-auto" id="modal">
     <div
       class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0"
     >
@@ -47,7 +60,7 @@ export default {
           <div class="flex justify-between items-center pb-4">
             <p class="text-2xl font-bold">{{ $t('register.your_account') }}</p>
             <!-- Modal Close Button -->
-            <div class="modal-close cursor-pointer z-50" @click="modalVisibility = false">
+            <div class="modal-close cursor-pointer z-50" @click="modalStore.isOpen = false">
               <i class="fas fa-times"></i>
             </div>
           </div>
@@ -58,31 +71,32 @@ export default {
               <a
                 class="block rounded py-3 px-4 transition"
                 :class="{
-                  'hover:text-white text-white bg-blue-600': tab === 'LoginForm',
-                  'hover:text-blue-600': tab === 'RegisterForm',
+                  'hover:text-white text-white bg-blue-600': currentTab === 'LoginForm',
+                  'hover:text-blue-600': currentTab === 'RegisterForm',
                 }"
                 href="#"
-                @click="tab = 'LoginForm'"
+                @click="currentTab = 'LoginForm'"
               >
                 {{ $t('register.login') }}
+                <p>{{ tab }}</p>
               </a>
             </li>
             <li class="flex-auto text-center">
               <a
                 class="block rounded py-3 px-4 transition"
                 :class="{
-                  'hover:text-white text-white bg-blue-600': tab === 'RegisterForm',
-                  'hover:text-blue-600': tab === 'LoginForm',
+                  'hover:text-white text-white bg-blue-600': currentTab === 'RegisterForm',
+                  'hover:text-blue-600': currentTab === 'LoginForm',
                 }"
                 href="#"
-                @click="tab = 'RegisterForm'"
+                @click="currentTab = 'RegisterForm'"
               >
                 {{ $t('register.register') }}
               </a>
             </li>
           </ul>
 
-          <component :is="tab"></component>
+          <component :is="tabs[currentTab]"></component>
         </div>
       </div>
     </div>
