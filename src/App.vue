@@ -1,4 +1,4 @@
-<script>
+<!-- <script>
 import { mapWritableState } from 'pinia'
 import AppHeader from '@/components/AppHeader.vue'
 import AppAuth from '@/components/AppAuth.vue'
@@ -21,7 +21,25 @@ export default {
     }
   },
 }
+</script> -->
+
+<script setup>
+import AppHeader from '@/components/AppHeader.vue'
+import AppAuth from '@/components/AppAuth.vue'
+import AppPlayer from '@/components/Player.vue'
+import { auth } from '@/includes/firebase'
+import useUserStore from '@/stores/user'
+
+defineOptions({
+  name: 'App',
+})
+const userStore = useUserStore()
+
+if (auth.currentUser) {
+  userStore.userLoggedIn = true
+}
 </script>
+
 <template>
   <AppHeader />
   <router-view></router-view>

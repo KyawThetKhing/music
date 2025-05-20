@@ -1,4 +1,4 @@
-<script>
+<!-- <script>
 import { songsCollection } from '@/includes/firebase'
 import AppSongItem from '@/components/SongItem.vue'
 
@@ -62,7 +62,72 @@ export default {
     },
   },
 }
+</script> -->
+
+<script setup>
+import { ref, onMounted, onBeforeUnmount } from 'vue'
+
+import { songsCollection } from '@/includes/firebase'
+import AppSongItem from '@/components/SongItem.vue'
+
+defineOptions({
+  name: 'HomeView',
+})
+
+const songs = ref([])
+const maxPerPage = ref(20)
+const isPendingRequest = ref(false)
+onMounted(() => {
+  window.addEventListener('scroll', handleScroll)
+})
+
+onBeforeUnmount(() => {
+  window.removeEventListener('scroll', handleScroll)
+})
+
+const handleScroll = () => {
+  const { scrollTop, offsetHeight } = document.documentElement
+  const { innerHeight } = window
+  const bottomOfWindow = Math.round(scrollTop) + innerHeight === offsetHeight
+
+  if (bottomOfWindow) {
+    getSongs()
+  }
+}
+
+const getSongs = async () => {
+  if (isPendingRequest.value) return
+  isPendingRequest.value = true
+  let snapshots
+  if (songs.value.length) {
+    const lastDoc = await songsCollection.doc(songs.value[songs.value.length - 1].docID).get()
+
+    snapshots = await songsCollection
+      // .where('uid', '==', auth.currentUser.uid)
+      .orderBy('modified_name')
+      .startAfter(lastDoc)
+      .limit(maxPerPage.value)
+      .get()
+  } else {
+    snapshots = await songsCollection
+      // .where('uid', '==', auth.currentUser.uid)
+      .orderBy('modified_name')
+      .limit(maxPerPage.value)
+      .get()
+  }
+
+  snapshots.forEach((doc) => {
+    songs.value.push({
+      docID: doc.id,
+      ...doc.data(),
+    })
+  })
+  isPendingRequest.value = false
+}
+
+getSongs()
 </script>
+
 <template>
   <main>
     <!-- Introduction -->

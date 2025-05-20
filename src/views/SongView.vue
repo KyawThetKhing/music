@@ -1,4 +1,4 @@
-<script>
+<!-- <script>
 import { ErrorMessage } from 'vee-validate'
 import { mapState, mapActions } from 'pinia'
 import dayjs from 'dayjs'
@@ -103,7 +103,121 @@ export default {
     },
   },
 }
+</script> -->
+
+<script setup>
+import { ref, computed, watch, onMounted } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
+import { ErrorMessage } from 'vee-validate'
+import { mapState, mapActions } from 'pinia'
+import dayjs from 'dayjs'
+import relativeTime from 'dayjs/plugin/relativeTime'
+
+import useUserStore from '@/stores/user'
+import usePlayerStore from '@/stores/player'
+
+import { songsCollection, auth, commentsCollection } from '@/includes/firebase'
+dayjs.extend(relativeTime)
+
+defineOptions({
+  name: 'SongView',
+})
+
+const userStore = useUserStore()
+const playerStore = usePlayerStore()
+
+const router = useRouter()
+const route = useRoute()
+
+const song = ref({})
+const commentSchema = ref({
+  comment: 'required|min:3',
+})
+
+const commentInSubmission = ref(false)
+const commentShowAlert = ref(false)
+const commentAlertVariant = ref('bg-green-500')
+const commentAlertMessage = ref('Please wait! Your comment is being added...')
+const comments = ref([])
+const sort = ref('1')
+
+const getSong = async () => {
+  const docSnapshot = await songsCollection.doc(route.params.id).get()
+
+  if (!docSnapshot.exists) {
+    router.push({ name: 'home' })
+    return
+  }
+
+  song.value = docSnapshot.data()
+}
+
+onMounted(async () => {
+  await getSong()
+  const querySort = route.query.sort
+  sort.value = querySort === '1' || querySort === '2' ? querySort : '1'
+  getComments()
+})
+
+const sortedComments = computed(() => {
+  return comments.value.slice().sort((a, b) => {
+    if (sort.value === '1') {
+      return new Date(b.datePosted) - new Date(a.datePosted)
+    }
+    return new Date(a.datePosted) - new Date(b.datePosted)
+  })
+})
+
+watch(sort, (newValue) => {
+  if (newValue === route.query.sort) return
+  router.push({
+    name: 'song',
+    params: { id: route.params.id },
+    query: { sort: newValue },
+  })
+})
+
+const addComment = async (values, { resetForm }) => {
+  commentInSubmission.value = true
+  commentShowAlert.value = true
+  commentAlertVariant.value = 'bg-blue-500'
+  commentAlertMessage.value = 'Please wait! Your comment is being submitted...'
+
+  const comment = {
+    content: values.comment,
+    datePosted: new Date().toString(),
+    sid: route.params.id,
+    name: auth.currentUser.displayName,
+    uid: auth.currentUser.uid,
+  }
+
+  await commentsCollection.add(comment)
+
+  commentInSubmission.value = false
+  commentShowAlert.value = true
+  commentAlertVariant.value = 'bg-green-500'
+  commentAlertMessage.value = 'Success! Your comment has been added'
+  resetForm()
+  getComments()
+}
+
+const getComments = async () => {
+  const snapshots = await commentsCollection.where('sid', '==', route?.params?.id).get()
+  comments.value = []
+
+  snapshots.forEach((doc) => {
+    comments.value.push({
+      docID: doc.id,
+      ...doc.data(),
+    })
+  })
+}
+
+const calculateDateAgo = (date) => {
+  return dayjs(date).fromNow()
+}
 </script>
+
 <template>
   <main>
     <!-- Music Header -->
@@ -116,10 +230,13 @@ export default {
         <!-- Play/Pause Button -->
         <button
           type="button"
-          @click.prevent="newSong(song)"
+          @click.prevent="playerStore.newSong(song)"
           class="z-50 h-24 w-24 text-3xl bg-white text-black rounded-full focus:outline-none"
         >
-          <i class="fa" :class="{ 'fa-pause': playing, 'fa-play': !playing }"></i>
+          <i
+            class="fa"
+            :class="{ 'fa-pause': playerStore.playing, 'fa-play': !playerStore.playing }"
+          ></i>
         </button>
         <div class="z-50 text-left ml-8">
           <!-- Song Info -->
@@ -147,7 +264,11 @@ export default {
           >
             {{ commentAlertMessage }}
           </div>
-          <VeeForm :validation-schema="commentSchema" @submit="addComment" v-if="userLoggedIn">
+          <VeeForm
+            :validation-schema="commentSchema"
+            @submit="addComment"
+            v-if="userStore.userLoggedIn"
+          >
             <VeeField
               name="comment"
               as="textarea"
