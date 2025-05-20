@@ -7,6 +7,8 @@ export default defineStore('user', {
   }),
   actions: {
     async register(values) {
+      console.log('🚀 ~ user.js:29 ~ authenticate ~ values:', values)
+
       const userCredential = await auth.createUserWithEmailAndPassword(
         values.email,
         values.password,

@@ -1,4 +1,4 @@
-<script>
+<!-- <script>
 import { auth, songsCollection } from '@/includes/firebase'
 import { supabase } from '@/includes/supabaseClient'
 
@@ -110,8 +110,121 @@ export default {
     },
   },
 }
-</script>
+</script> -->
 
+<script setup>
+import { ref } from 'vue'
+import { auth, songsCollection } from '@/includes/firebase'
+import { supabase } from '@/includes/supabaseClient'
+
+defineOptions({
+  name: 'Upload',
+})
+
+const emit = defineEmits(['uploaded'])
+
+const isDragOver = ref(false)
+const uploads = ref([])
+
+const sanitizeKey = (filename) => {
+  return filename
+    .toLowerCase()
+    .replace(/\s+/g, '-')
+    .replace(/[\[\]{}()"'`]/g, '')
+    .replace(/[^a-z0-9\-\.]/g, '')
+}
+
+const upload = async ($event) => {
+  isDragOver.value = false
+  const files = $event.dataTransfer ? [...$event.dataTransfer.files] : [...$event.target.files]
+
+  for (const file of files) {
+    if (file.type !== 'audio/mpeg') continue
+
+    if (!navigator.onLine) {
+      uploads.value.push({
+        task: {},
+        current_progress: 100,
+        name: file.name,
+        variant: 'bg-red-400',
+        icon: 'fa fa-times',
+        text_class: 'text-red-400',
+      })
+      return
+    }
+    const storageRef = supabase.storage.from('music')
+    const filePath = `${sanitizeKey(file.name)}`
+
+    const upload = {
+      task: null,
+      current_progress: 0,
+      name: file.name,
+      variant: 'private',
+      icon: 'fa fa-spinner fa-spin',
+      text_class: 'text-gray-400',
+    }
+
+    uploads.value.push(upload)
+    const uploadIndex = uploads.value.length - 1
+
+    const fakeProgress = setInterval(() => {
+      const item = uploads.value[uploadIndex]
+      if (item.current_progress < 95) {
+        item.current_progress += 5
+      } else {
+        clearInterval(fakeProgress)
+      }
+    }, 200)
+
+    const { data, error } = await storageRef.upload(filePath, file, {
+      contentType: 'audio/mpeg',
+      upsert: true,
+    })
+    clearInterval(fakeProgress)
+
+    const uploadItem = uploads.value[uploadIndex]
+
+    if (error) {
+      uploadItem.variant = 'bg-red-400'
+      uploadItem.icon = 'fa fa-times'
+      uploadItem.text_class = 'text-red-400'
+      uploadItem.current_progress = 100
+      continue
+    }
+    const {
+      data: { publicUrl },
+      error: publicUrlError,
+    } = await storageRef.getPublicUrl(filePath)
+    if (publicUrlError) {
+      uploadItem.variant = 'bg-red-400'
+      uploadItem.icon = 'fa fa-times'
+      uploadItem.text_class = 'text-red-400'
+      uploadItem.current_progress = 100
+      continue
+    }
+    console.log('🚀 ~ Upload.vue:68 ~ upload ~ publicUrl:', publicUrl)
+    const song = {
+      uid: auth.currentUser.uid,
+      display_name: auth.currentUser.displayName,
+      original_name: file.name,
+      modified_name: file.name,
+      genre: '',
+      comment_count: 0,
+      url: publicUrl,
+      created_at: new Date(),
+    }
+    await songsCollection.add(song)
+
+    uploadItem.task = data
+    uploadItem.current_progress = 100
+    uploadItem.variant = 'bg-green-400'
+    uploadItem.icon = 'fa fa-check'
+    uploadItem.text_class = 'text-green-400'
+  }
+
+  emit('uploaded')
+}
+</script>
 <template>
   <div class="bg-white rounded border border-gray-200 relative flex flex-col">
     <div class="px-6 pt-6 pb-5 font-bold border-b border-gray-200">

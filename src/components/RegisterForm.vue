@@ -1,4 +1,4 @@
-<script>
+<!-- <script>
 import { mapActions } from 'pinia'
 
 import useUserStore from '@/stores/user'
@@ -9,7 +9,7 @@ export default {
   data() {
     return {
       registerSchema: {
-        name: 'required|min:3|max:100|alphSpaces',
+        name: 'required|min:3|max:100',
         email: 'required|min:3|max:100|email',
         age: 'required|minValue:18|maxValue:120|numeric',
         password: 'required|min:3|max:100',
@@ -51,6 +51,57 @@ export default {
       window.location.reload()
     },
   },
+}
+</script> -->
+
+<script setup>
+import { ref } from 'vue'
+
+import useUserStore from '@/stores/user'
+
+defineOptions({
+  name: 'RegisterForm',
+})
+const userStore = useUserStore()
+
+const registerSchema = ref({
+  name: 'required|min:3|max:100',
+  email: 'required|min:3|max:100|email',
+  age: 'required|minValue:18|maxValue:120|numeric',
+  password: 'required|min:3|max:100',
+  confirmPassword: 'passwords_mismatch:@password',
+  country: 'required|country_excluded:Myanmar',
+  userType: 'required',
+  tos: 'tos',
+})
+
+const userData = ref({
+  country: 'USA',
+  userType: 'listener',
+})
+
+const regInSubmission = ref(false)
+const regShowAlert = ref(false)
+const regAlertVariant = ref('')
+const regAlertMsg = ref('')
+
+const handleRegister = async (values) => {
+  regInSubmission.value = true
+  regShowAlert.value = true
+  regAlertVariant.value = 'bg-blue-500'
+  regAlertMsg.value = 'Please wait as we process your registration'
+  try {
+    await userStore.register(values)
+  } catch (error) {
+    regInSubmission.value = false
+    regAlertVariant.value = 'bg-red-500'
+    regAlertMsg.value = 'An error occurred. Please try again.'
+    return
+  }
+  regAlertVariant.value = 'bg-green-500'
+  regAlertMsg.value = 'Success! Your registration is complete'
+
+  window.location.reload()
 }
 </script>
 

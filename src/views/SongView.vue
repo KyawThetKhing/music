@@ -135,7 +135,7 @@ export default {
         <div class="px-6 pt-6 pb-5 font-bold border-b border-gray-200">
           <!-- Comment Count -->
           <span class="card-title">{{
-            $tc('song.comment_count', comments.length, { count: comments.length })
+            $t('song.comment_count', comments.length, { count: comments.length })
           }}</span>
           <i class="fa fa-comments float-right text-green-400 text-2xl"></i>
         </div>

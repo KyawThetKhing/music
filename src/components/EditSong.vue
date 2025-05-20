@@ -1,4 +1,4 @@
-<script>
+<!-- <script>
 import { songsCollection } from '@/includes/firebase'
 
 export default {
@@ -64,6 +64,74 @@ export default {
       this.$emit('cancel')
     },
   },
+}
+</script> -->
+<script setup>
+import { ref, watch } from 'vue'
+
+import { songsCollection } from '@/includes/firebase'
+
+const props = defineProps({
+  songToEdit: {
+    type: Object,
+    default: {},
+  },
+})
+
+const emit = defineEmits(['edited', 'cancel'])
+
+const editSongSchema = ref({
+  title: 'required|min:3|max:100',
+  genre: 'required',
+})
+
+const form = ref({
+  title: props.songToEdit.modified_name || '',
+  genre: props.songToEdit.genre || '',
+})
+
+const inSubmission = ref(false)
+const showAlert = ref(false)
+const alertVariant = ref('bg-blue-500')
+const alertMessage = ref('Please wait! Updating song info')
+
+watch(
+  () => props.songToEdit,
+  (newSong) => {
+    form.value = {
+      title: newSong.modified_name || '',
+      genre: newSong.genre || '',
+    }
+  },
+  { deep: true },
+)
+
+const editedSong = async () => {
+  const updatedSong = {
+    ...props.songToEdit,
+    modified_name: form.value.title,
+    genre: form.value.genre,
+  }
+  try {
+    inSubmission.value = true
+    showAlert.value = true
+    alertVariant.value = 'bg-blue-500'
+    alertMessage.value = 'Please wait! Updating song info'
+    await songsCollection.doc(props.songToEdit.docID).update(updatedSong)
+  } catch (e) {
+    alertVariant.value = 'bg-red-500'
+    alertMessage.value = 'Something went wrong! Please try again'
+  } finally {
+    inSubmission.value = false
+    showAlert.value = true
+    alertVariant.value = 'bg-green-500'
+    alertMessage.value = 'Success! Your song has been updated'
+    emit('edited', updatedSong)
+  }
+}
+
+const cancelEdit = () => {
+  emit('cancel')
 }
 </script>
 <template>

@@ -1,4 +1,4 @@
-<script>
+<!-- <script>
 export default {
   name: 'AppSongItem',
   props: {
@@ -8,6 +8,18 @@ export default {
     },
   },
 }
+</script> -->
+<script setup>
+defineOptions({
+  name: 'AppSongItem',
+})
+
+defineProps({
+  song: {
+    type: Object,
+    default: {},
+  },
+})
 </script>
 <template>
   <li

@@ -1,4 +1,4 @@
-<script>
+<!-- <script>
 import { mapActions } from 'pinia'
 import useUserStore from '@/stores/user'
 
@@ -39,6 +39,43 @@ export default {
       window.location.reload()
     },
   },
+}
+</script> -->
+<script setup>
+import { ref } from 'vue'
+
+import useUserStore from '@/stores/user'
+
+const loginSchema = ref({
+  email: 'required|min:3|max:100|email',
+  password: 'required|min:3|max:100',
+})
+const loginInSubmission = ref(false)
+const loginShowAlert = ref(false)
+const loginAlertVariant = ref('')
+const loginAlertMsg = ref('')
+
+const userStore = useUserStore()
+
+const handleLogin = async (values) => {
+  loginInSubmission.value = true
+  loginShowAlert.value = true
+  loginAlertVariant.value = 'bg-blue-500'
+  loginAlertMsg.value = 'Please wait as we process your login'
+
+  try {
+    await userStore.authenticate(values)
+  } catch (error) {
+    loginInSubmission.value = false
+    loginAlertVariant.value = 'bg-red-500'
+    loginAlertMsg.value = 'Invalid email or password'
+    return
+  }
+
+  loginAlertVariant.value = 'bg-green-500'
+  loginAlertMsg.value = 'Success! Your login is complete'
+
+  window.location.reload()
 }
 </script>
 
