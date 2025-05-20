@@ -1,32 +1,3 @@
-<!-- <script>
-import { mapWritableState, mapState, mapActions } from 'pinia'
-import useModalStore from '@/stores/modal'
-import useUserStore from '@/stores/user'
-
-export default {
-  name: 'AppHeader',
-  computed: {
-    ...mapWritableState(useModalStore, ['isOpen']),
-    ...mapState(useUserStore, ['userLoggedIn']),
-    currentLocale() {
-      return this.$i18n.locale === 'fr' ? 'French' : 'English'
-    },
-  },
-  methods: {
-    ...mapActions(useUserStore, ['signOut']),
-    toggleAuthModal() {
-      this.isOpen = !this.isOpen
-    },
-    logOut() {
-      this.signOut()
-      this.$router.replace({ name: 'home' })
-    },
-    changeLocale() {
-      this.$i18n.locale = this.$i18n.locale === 'en' ? 'fr' : 'en'
-    },
-  },
-}
-</script> -->
 <script setup>
 import { useI18n } from 'vue-i18n'
 import { computed } from 'vue'

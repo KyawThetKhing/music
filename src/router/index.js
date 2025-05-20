@@ -3,7 +3,6 @@ import { createRouter, createWebHistory } from 'vue-router'
 import useUserStore from '@/stores/user'
 
 const HomeView = () => import('@/views/HomeView.vue')
-const AboutView = () => import('@/views/AboutView.vue')
 const ManageView = () => import('@/views/ManageView.vue')
 const SongView = () => import('@/views/SongView.vue')
 const router = createRouter({
@@ -13,11 +12,6 @@ const router = createRouter({
       path: '/',
       name: 'home',
       component: HomeView,
-    },
-    {
-      path: '/about',
-      name: 'about',
-      component: AboutView,
     },
     {
       path: '/manage-music',

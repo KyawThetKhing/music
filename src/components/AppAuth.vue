@@ -1,29 +1,3 @@
-<!-- <script>
-import { mapState, mapWritableState } from 'pinia'
-import useModalStore from '@/stores/modal'
-import LoginForm from '@/components/LoginForm.vue'
-import RegisterForm from '@/components/RegisterForm.vue'
-
-export default {
-  name: 'AppAuth',
-  components: {
-    LoginForm,
-    RegisterForm,
-  },
-  data() {
-    return {
-      tab: 'LoginForm',
-    }
-  },
-  computed: {
-    ...mapState(useModalStore, ['hiddenClass']),
-    ...mapWritableState(useModalStore, {
-      modalVisibility: 'isOpen',
-    }),
-  },
-  methods: {},
-}
-</script> -->
 <script setup>
 import { ref } from 'vue'
 import useModalStore from '@/stores/modal'

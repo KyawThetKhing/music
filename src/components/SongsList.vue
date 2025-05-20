@@ -1,14 +1,3 @@
-<!-- <script>
-export default {
-  name: 'SongsList',
-  props: {
-    song: {
-      type: Object,
-      default: {},
-    },
-  },
-}
-</script> -->
 <script setup>
 defineOptions({
   name: 'SongsList',

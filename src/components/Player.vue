@@ -1,17 +1,3 @@
-<!-- <script>
-import { mapActions, mapState } from 'pinia'
-import usePlayerStore from '@/stores/player'
-
-export default {
-  name: 'AppPlayer',
-  computed: {
-    ...mapState(usePlayerStore, ['currentSong', 'playing', 'duration', 'seek', 'playerProgress']),
-  },
-  methods: {
-    ...mapActions(usePlayerStore, ['toggleAudio', 'updateSeek']),
-  },
-}
-</script> -->
 <script setup>
 import usePlayerStore from '@/stores/player'
 
